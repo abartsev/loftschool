@@ -7,6 +7,11 @@
  Посмотрите как работает forEach и повторите это поведение для массива, который будет передан в параметре array
  */
 function forEach(array, fn) {
+
+    for (var i = 0; i < array.length; i++) {
+        fn(array[i], i, array);
+    }
+
 }
 
 /*
@@ -16,6 +21,16 @@ function forEach(array, fn) {
  Посмотрите как работает map и повторите это поведение для массива, который будет передан в параметре array
  */
 function map(array, fn) {
+
+    let b = [];
+
+    for (let i = 0; i < array.length; i++) {
+
+        b[i] = fn (array[i], i, array);
+
+    }
+
+    return b;
 }
 
 /*
@@ -25,6 +40,13 @@ function map(array, fn) {
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
 function reduce(array, fn, initial) {
+
+    for (let i = 1; i < array.length; i++ ) {
+
+        return fn(initial || array[0], array[i], i, array );
+
+    }
+
 }
 
 /*
@@ -36,6 +58,16 @@ function reduce(array, fn, initial) {
    upperProps({ name: 'Сергей', lastName: 'Петров' }) вернет ['NAME', 'LASTNAME']
  */
 function upperProps(obj) {
+
+    var arr = [];
+
+    for (let key in obj) {
+
+        arr.push(key.toUpperCase());
+
+    }
+
+    return arr;
 }
 
 /*
@@ -44,7 +76,21 @@ function upperProps(obj) {
  Напишите аналог встроенного метода slice для работы с массивами
  Посмотрите как работает slice и повторите это поведение для массива, который будет передан в параметре array
  */
-function slice(array, from, to) {
+function slice(array, from = 0, to) {
+
+    let new_arr = [];
+
+    to < 0 ? to = array.length + to : to;
+
+    from < 0 ? from = array.length + from : from;
+    
+    for (let i = from; i < (to || array.length); i++) {
+
+        new_arr.push(array[i]);
+
+    }
+
+    return new_arr;
 }
 
 /*
