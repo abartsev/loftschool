@@ -39,7 +39,7 @@ function map(array, fn) {
  */
 function reduce(array, fn, initial) {
 
-    for (let i = 1; i < array.length; i++ ) {
+    for (let i = (initial) ? 0 : 1; i < array.length; i++ ) {
 
         return fn(initial || array[0], array[i], i, array );
 
@@ -78,9 +78,12 @@ function slice(array, from = 0, to) {
 
     let new_arr = [];
 
-    to < 0 ? to = array.length + to : to;
+    to = (to < 0) ? array.length + to :
+    (to > array.length) ? array.length : to;
 
-    from < 0 ? from = array.length + from : from;
+    from = (from < 0 && from > -array.length) ? array.length + from : 
+    (from > array.length) ? array.length : 
+    (from < -array.length) ? 0 : from;
 
     for (let i = from; i < (to || array.length); i++) {
 
