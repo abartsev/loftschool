@@ -39,9 +39,9 @@ function map(array, fn) {
  */
 function reduce(array, fn, initial) {
  
-    var init = initial || array[0];
-
-    for (let i = (initial) ? 0 : 1; i < array.length; i++ ) {
+    let init = initial || array[0];
+    let i = (initial) ? 0 : 1;
+    for (; i < array.length; i++ ) {
 
         return fn(init, array[i], i, array );
 
