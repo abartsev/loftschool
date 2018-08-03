@@ -38,10 +38,12 @@ function map(array, fn) {
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
 function reduce(array, fn, initial) {
+ 
+    var init = initial || array[0];
 
     for (let i = (initial) ? 0 : 1; i < array.length; i++ ) {
 
-        return fn(initial || array[0], array[i], i, array );
+        return fn(init, array[i], i, array );
 
     }
 
