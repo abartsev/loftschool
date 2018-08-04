@@ -38,13 +38,16 @@ function map(array, fn) {
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
 function reduce(array, fn, initial) {
+    var prew = initial || array[0];
+    let i = (initial) ? 0 : 1;
 
-    for (let i = 1; i < array.length; i++ ) {
+    for (; i < array.length; i++ ) {
 
-        return fn(initial || array[0], array[i], i, array );
+        prew = fn(prew, array[i], i, array );
 
     }
 
+    return prew;
 }
 
 /*
@@ -57,12 +60,10 @@ function reduce(array, fn, initial) {
  */
 function upperProps(obj) {
 
-    var arr = [];
+    var arr = Object.keys(obj);
 
-    for (let key in obj) {
-
-        arr.push(key.toUpperCase());
-
+    for (let i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].toUpperCase();
     }
 
     return arr;
@@ -76,19 +77,25 @@ function upperProps(obj) {
  */
 function slice(array, from = 0, to) {
 
-    let new_arr = [];
-
-    to < 0 ? to = array.length + to : to;
-
-    from < 0 ? from = array.length + from : from;
+    let newArr = [];
+  
+    if (to < 0 && to > -array.length) {
+        to = array.length + to;
+    } else if (from < 0 && from > -array.length) {
+        from = array.length + from;
+    } else if (from > array.length) {
+        from = array.length;
+    } else if (from < -array.length) {
+        from = 0;
+    }
 
     for (let i = from; i < (to || array.length); i++) {
 
-        new_arr.push(array[i]);
+        newArr.push(array[i]);
 
     }
 
-    return new_arr;
+    return newArr;
 }
 
 /*
