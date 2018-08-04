@@ -38,15 +38,16 @@ function map(array, fn) {
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
 function reduce(array, fn, initial) {
- 
-    let init = initial || array[0];
+    var prew = initial || array[0];
     let i = (initial) ? 0 : 1;
+
     for (; i < array.length; i++ ) {
 
-        return fn(init, array[i], i, array );
+        prew = fn(prew, array[i], i, array );
 
     }
 
+    return prew;
 }
 
 /*
@@ -59,12 +60,10 @@ function reduce(array, fn, initial) {
  */
 function upperProps(obj) {
 
-    var arr = [];
+    var arr = Object.keys(obj);
 
-    for (let key in obj) {
-
-        arr.push(key.toUpperCase());
-
+    for (let i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].toUpperCase();
     }
 
     return arr;
@@ -76,24 +75,35 @@ function upperProps(obj) {
  Напишите аналог встроенного метода slice для работы с массивами
  Посмотрите как работает slice и повторите это поведение для массива, который будет передан в параметре array
  */
-function slice(array, from = 0, to) {
+function slice(array, from = 0, to = array.length) {
 
-    let new_arr = [];
+    let newArr = [];
+  
+    if (to < 0 ) {
+        to = array.length + to;
+    }
+    if (to > array.length) {
+        to = array.length;
+    }
+    if (to == 0) {
+        to = 0;
+    }
+    if (from < 0 && from > -array.length) {
+        from = array.length + from;
+    }
+    if (from > array.length) {
+        from = array.length;
+    }
+    if (from < -array.length || from == 0) {
+        from = 0;
+    }
+    for (let i = from; i < to; i++) {
 
-    to = (to < 0) ? array.length + to :
-    (to > array.length) ? array.length : to;
-
-    from = (from < 0 && from > -array.length) ? array.length + from : 
-    (from > array.length) ? array.length : 
-    (from < -array.length) ? 0 : from;
-
-    for (let i = from; i < (to || array.length); i++) {
-
-        new_arr.push(array[i]);
+        newArr.push(array[i]);
 
     }
 
-    return new_arr;
+    return newArr;
 }
 
 /*
