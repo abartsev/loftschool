@@ -125,7 +125,7 @@ function deleteTextNodes(where) {
  */
 function deleteTextNodesRecursive(where) {
     if (where.childNodes.length == 0)
-        return where;
+        {return where;}
 
     for (let i = 0; i < where.childNodes.length; i++) {
 
@@ -164,6 +164,41 @@ function deleteTextNodesRecursive(where) {
    }
  */
 function collectDOMStat(root) {
+    const obj = {};
+
+    obj.tags = {};
+    obj.classes = {};
+    obj.texts = 0;
+
+    let search = (node) => {
+        if (!node.childNodes) {
+            return;
+        }
+        for (let key of node.childNodes) {
+
+            if (key.nodeType === 3) {
+                obj.texts++;
+            } else {
+               
+                let tag = key.tagName;
+
+                obj.tags[tag] = (obj.tags[tag]) ? ++obj.tags[tag] : 1;
+
+                for (let nodeClass of key.classList) {
+                    obj.classes[nodeClass] = (obj.classes[nodeClass]) ? ++obj.classes[nodeClass] : 1;
+                }
+
+            }
+
+            search(key);
+
+        }
+
+    }
+
+    search(root);
+    
+    return obj;
 }
 
 /*
