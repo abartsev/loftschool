@@ -35,17 +35,25 @@ function loadAndSortTowns() {
 
         var req = new XMLHttpRequest();
 
-        req.open( "GET", 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json', true);
+        req.open( 'GET', 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json', true);
         req.responseType = 'json';
         req.send();
         req.addEventListener('load', ()=>{
 
             if (req.status < 400) {
-                resolve(req.response);
+
+                var arCity = req.response.sort((a, b) => {
+                    if (a.name > b.name)
+                        return 1;
+                    if (a.name < b.name)
+                        return -1;
+                });
+
+                resolve(arCity);
             }
         });
 
-    });
+    });   
 }
 
 export {
