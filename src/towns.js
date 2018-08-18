@@ -37,6 +37,29 @@ const homeworkContainer = document.querySelector('#homework-container');
  https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
  */
 function loadTowns() {
+    return new Promise((resolve) => {
+
+        var req = new XMLHttpRequest();
+
+        req.open( 'GET', 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json', true);
+        req.responseType = 'json';
+        req.send();
+        req.addEventListener('load', ()=>{
+
+            if (req.status < 400) {
+
+                var arCity = req.response.sort((a, b) => {
+                    if (a.name > b.name)
+                        {return 1;}
+                    if (a.name < b.name)
+                        {return -1;}
+                });
+
+                resolve(arCity);
+            }
+        });
+
+    });   
 }
 
 /*
@@ -51,6 +74,8 @@ function loadTowns() {
    isMatching('Moscow', 'Moscov') // false
  */
 function isMatching(full, chunk) {
+    return (full.toLowerCase().indexOf(chunk.toLowerCase()) == -1 ) ? false : true;
+
 }
 
 /* Блок с надписью "Загрузка" */
@@ -62,8 +87,35 @@ const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
 const filterResult = homeworkContainer.querySelector('#filter-result');
 
-filterInput.addEventListener('keyup', function() {
+filterInput.addEventListener('keyup', function(e) {
     // это обработчик нажатия кливиш в текстовом поле
+    var ar = [];
+
+    loadTowns().then((arrCity) => {
+        if (filterInput.value != '') {
+            for (const key in arrCity) {
+                if (arrCity.hasOwnProperty(key)) {
+                    var ansver = isMatching(arrCity[key].name, filterInput.value);
+
+                    if (ansver) {
+                        ar.push(arrCity[key].name);
+                    } 
+                }
+            }
+        } else {
+            filterResult.innerHTML = '';
+        }
+        if (ar.length > 0) {
+
+            filterResult.innerHTML = '';
+            ar.forEach((item)=>{
+                let city = document.createElement('p');
+
+                city.innerHTML = item;
+                filterResult.appendChild(city);
+            });
+        }
+    })
 });
 
 export {
