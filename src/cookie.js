@@ -50,10 +50,10 @@ filterNameInput.addEventListener('keyup', function() {
 addButton.addEventListener('click', () => {
     // здесь можно обработать нажатие на кнопку "добавить cookie"
     document.cookie = addNameInput.value + '=' + addValueInput.value;
+    addTable();
+});
 
-    const newTr = document.createElement('tr');
-
-    listTable.appendChild(newTr);
+function addTable() {
 
     const objCookie = document.cookie.split('; ').reduce((result, current) => {
 
@@ -63,15 +63,37 @@ addButton.addEventListener('click', () => {
 
         return result;
     }, {});
-
+    
     for (const key in objCookie) {
         if (objCookie.hasOwnProperty(key)) {
-            const dr = document.createElement('td');
-            dr.innerHTML = objCookie[key];
-            newTr.appendChild(dr);
-        
+
+            const newTr = document.createElement('tr');
+
+            listTable.appendChild(newTr);
+
+            newTr.innerHTML = `<td>${key}</td><td>${objCookie[key]}</td><td id="buttomdel${key}"></td>`;
+            
+            const tdbtn = document.querySelector('#buttomdel'+key);
+
+            const buttonDell = document.createElement('button');
+
+            buttonDell.innerHTML = 'delete';
+
+            buttonDell.setAttribute('id', key);
+
+            tdbtn.appendChild(buttonDell);
         }
     }
-    console.log(objCookie);
-});
 
+}
+addTable();
+
+homeworkContainer.addEventListener('click', function(e) {
+    if (e.target.nodeName === 'BUTTON') {
+
+        document.cookie = e.target.id + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
+        addTable();
+    }
+    
+});
