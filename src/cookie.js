@@ -45,8 +45,10 @@ const listTable = homeworkContainer.querySelector('#list-table tbody');
 
 filterNameInput.addEventListener('keyup', function() {
     // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
+    filter(filterNameInput.value);
+  
 });
-
+     
 addButton.addEventListener('click', () => {
     // здесь можно обработать нажатие на кнопку "добавить cookie"
     document.cookie = addNameInput.value + '=' + addValueInput.value;
@@ -55,6 +57,7 @@ addButton.addEventListener('click', () => {
 });
 
 function addTable() {
+   
     if (document.cookie.length > 0) {
 
         const objCookie = document.cookie.split('; ').reduce((result, current) => {
@@ -65,31 +68,61 @@ function addTable() {
 
             return result;
         }, {});
-        console.log(objCookie);
-        for (const key in objCookie) {
-            if (objCookie.hasOwnProperty(key)) {
 
-                const newTr = document.createElement('tr');
+        temlateTable(objCookie);
+    }
+}
+function temlateTable(obj) {
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
 
-                listTable.appendChild(newTr);
+            const newTr = document.createElement('tr');
 
-                newTr.innerHTML = `<td>${key}</td><td>${objCookie[key]}</td><td id="buttomdel${key}"></td>`;
-                
-                const tdbtn = document.querySelector('#buttomdel'+key);
+            listTable.appendChild(newTr);
 
-                const buttonDell = document.createElement('button');
+            newTr.innerHTML = `<td>${key}</td><td>${obj[key]}</td><td id="buttomdel${key}"></td>`;
+        
+            const tdbtn = document.querySelector('#buttomdel'+key);
 
-                buttonDell.innerHTML = 'delete';
+            const buttonDell = document.createElement('button');
 
-                buttonDell.setAttribute('id', key);
+            buttonDell.innerHTML = 'delete';
 
-                tdbtn.appendChild(buttonDell);
-            }
+            buttonDell.setAttribute('id', key);
+
+            tdbtn.appendChild(buttonDell);
         }
     }
 }
 addTable();
+function filter (value) {
+    const objCookie = document.cookie.split('; ').reduce((result, current) => {
 
+        const [name, value] = current.split('=');
+
+        result[name] = value;
+
+        return result;
+    }, {});
+
+    for (const key in objCookie) {
+        var ansver = isMatching(key, value);
+        if (ansver) {
+          listTable.innerHTML = '';
+          const newObj = {
+            key : objCookie[key],
+          };
+        
+        temlateTable(newObj);
+        console.log(newObj);
+        }
+        
+    }
+}
+function isMatching(full, chunk) {
+    return (full.toLowerCase().indexOf(chunk.toLowerCase()) == -1 ) ? false : true;
+
+}
 listTable.addEventListener('click', function(e) {
     if (e.target.nodeName === 'BUTTON') {
 
