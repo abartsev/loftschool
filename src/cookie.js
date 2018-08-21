@@ -50,50 +50,53 @@ filterNameInput.addEventListener('keyup', function() {
 addButton.addEventListener('click', () => {
     // здесь можно обработать нажатие на кнопку "добавить cookie"
     document.cookie = addNameInput.value + '=' + addValueInput.value;
+    listTable.innerHTML = '';
     addTable();
 });
 
 function addTable() {
+    if (document.cookie.length > 0) {
 
-    const objCookie = document.cookie.split('; ').reduce((result, current) => {
+        const objCookie = document.cookie.split('; ').reduce((result, current) => {
 
-        const [name, value] = current.split('=');
+            const [name, value] = current.split('=');
 
-        result[name] = value;
+            result[name] = value;
 
-        return result;
-    }, {});
-    
-    for (const key in objCookie) {
-        if (objCookie.hasOwnProperty(key)) {
+            return result;
+        }, {});
+        console.log(objCookie);
+        for (const key in objCookie) {
+            if (objCookie.hasOwnProperty(key)) {
 
-            const newTr = document.createElement('tr');
+                const newTr = document.createElement('tr');
 
-            listTable.appendChild(newTr);
+                listTable.appendChild(newTr);
 
-            newTr.innerHTML = `<td>${key}</td><td>${objCookie[key]}</td><td id="buttomdel${key}"></td>`;
-            
-            const tdbtn = document.querySelector('#buttomdel'+key);
+                newTr.innerHTML = `<td>${key}</td><td>${objCookie[key]}</td><td id="buttomdel${key}"></td>`;
+                
+                const tdbtn = document.querySelector('#buttomdel'+key);
 
-            const buttonDell = document.createElement('button');
+                const buttonDell = document.createElement('button');
 
-            buttonDell.innerHTML = 'delete';
+                buttonDell.innerHTML = 'delete';
 
-            buttonDell.setAttribute('id', key);
+                buttonDell.setAttribute('id', key);
 
-            tdbtn.appendChild(buttonDell);
+                tdbtn.appendChild(buttonDell);
+            }
         }
     }
-
 }
 addTable();
 
-homeworkContainer.addEventListener('click', function(e) {
+listTable.addEventListener('click', function(e) {
     if (e.target.nodeName === 'BUTTON') {
 
         document.cookie = e.target.id + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        
+        e.target.parentNode.parentNode.remove();
 
-        addTable();
     }
     
 });
