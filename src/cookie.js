@@ -45,7 +45,7 @@ const listTable = homeworkContainer.querySelector('#list-table tbody');
 
 filterNameInput.addEventListener('keyup', function() {
     // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
-    getCookis(filterNameInput.value);
+    getCookis();
   
 });
      
@@ -59,14 +59,13 @@ addButton.addEventListener('click', () => {
 function getCookis() {
 
     if (document.cookie.length > 0) {
-
+        listTable.innerHTML = '';
         const objCookie = document.cookie.split('; ').reduce((result, current) => {
 
             const [name, value] = current.split('=');
-            if (arguments.length > 0) {
-                console.log([...arguments]);
-                listTable.innerHTML = '';
-                var ansver = isMatching(name, [...arguments][0]);
+            if (filterNameInput.value !== "") {
+
+                var ansver = isMatching(name, filterNameInput.value);
                 if (ansver) {
                     result[name] = value;
                 }
