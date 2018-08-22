@@ -63,10 +63,11 @@ function getCookis() {
         const objCookie = document.cookie.split('; ').reduce((result, current) => {
 
             const [name, value] = current.split('=');
-            if (filterNameInput.value !== "") {
+            if (filterNameInput.value) {
 
                 var ansver = isMatching(name, filterNameInput.value);
-                if (ansver) {
+                var ansverVall = isMatching(value, filterNameInput.value);
+                if (ansver || ansverVall) {
                     result[name] = value;
                 }
             } else {
