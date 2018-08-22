@@ -45,51 +45,69 @@ const listTable = homeworkContainer.querySelector('#list-table tbody');
 
 filterNameInput.addEventListener('keyup', function() {
     // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
+    getCookis(filterNameInput.value);
+  
 });
-
+     
 addButton.addEventListener('click', () => {
     // здесь можно обработать нажатие на кнопку "добавить cookie"
     document.cookie = addNameInput.value + '=' + addValueInput.value;
     listTable.innerHTML = '';
-    addTable();
+    getCookis();
 });
 
-function addTable() {
+function getCookis() {
+
     if (document.cookie.length > 0) {
 
         const objCookie = document.cookie.split('; ').reduce((result, current) => {
 
             const [name, value] = current.split('=');
-
-            result[name] = value;
+            if (arguments.length > 0) {
+                console.log([...arguments]);
+                listTable.innerHTML = '';
+                var ansver = isMatching(name, [...arguments][0]);
+                if (ansver) {
+                    result[name] = value;
+                }
+            } else {
+                result[name] = value;
+            }
 
             return result;
         }, {});
-        console.log(objCookie);
-        for (const key in objCookie) {
-            if (objCookie.hasOwnProperty(key)) {
 
-                const newTr = document.createElement('tr');
+        temlateTable(objCookie);
+    }
+}
+function temlateTable(obj) {
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
 
-                listTable.appendChild(newTr);
+            const newTr = document.createElement('tr');
 
-                newTr.innerHTML = `<td>${key}</td><td>${objCookie[key]}</td><td id="buttomdel${key}"></td>`;
-                
-                const tdbtn = document.querySelector('#buttomdel'+key);
+            listTable.appendChild(newTr);
 
-                const buttonDell = document.createElement('button');
+            newTr.innerHTML = `<td>${key}</td><td>${obj[key]}</td><td id="buttomdel${key}"></td>`;
+        
+            const tdbtn = document.querySelector('#buttomdel'+key);
 
-                buttonDell.innerHTML = 'delete';
+            const buttonDell = document.createElement('button');
 
-                buttonDell.setAttribute('id', key);
+            buttonDell.innerHTML = 'delete';
 
-                tdbtn.appendChild(buttonDell);
-            }
+            buttonDell.setAttribute('id', key);
+
+            tdbtn.appendChild(buttonDell);
         }
     }
 }
-addTable();
+getCookis();
 
+function isMatching(full, chunk) {
+    return (full.toLowerCase().indexOf(chunk.toLowerCase()) == -1 ) ? false : true;
+
+}
 listTable.addEventListener('click', function(e) {
     if (e.target.nodeName === 'BUTTON') {
 
