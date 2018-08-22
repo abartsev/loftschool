@@ -65,9 +65,9 @@ function getCookis() {
             const [name, value] = current.split('=');
             if (filterNameInput.value) {
 
-                var ansver = isMatching(name, filterNameInput.value);
-                var ansverVall = isMatching(value, filterNameInput.value);
-                if (ansver || ansverVall) {
+                var answer = isMatching(name, filterNameInput.value);
+                var answerVall = isMatching(value, filterNameInput.value);
+                if (answer || answerVall) {
                     result[name] = value;
                 }
             } else {
