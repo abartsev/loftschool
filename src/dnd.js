@@ -27,6 +27,26 @@ const homeworkContainer = document.querySelector('#homework-container');
    homeworkContainer.appendChild(newDiv);
  */
 function createDiv() {
+    const div = document.createElement('div');
+    const minSize = 20;
+    const maxSize = 200;
+    const maxColor = 0xffffff;
+
+    div.className = 'draggable-div';
+    div.style.background = '#' + random(0, maxColor);
+    div.style.top = random(0, window.innerHeight) + 'px';
+    div.style.left = random(0, window.innerWidth) + 'px';
+    div.style.width = random(minSize, maxSize) + 'px';
+    div.style.height = random(minSize, maxSize) + 'px';
+
+    div.addEventListener('mousedown', e => {
+        currentDrag = div;
+        startX = e.offsetX;
+        startY = e.offsetY;
+    });
+    div.addEventListener('mouseup', () => currentDrag = false);
+
+    return div;
 }
 
 /*
