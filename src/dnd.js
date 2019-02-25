@@ -17,6 +17,21 @@
  */
 const homeworkContainer = document.querySelector('#homework-container');
 
+function random(from, to) {
+    return parseInt(from + Math.random() * to - from);
+}
+
+let currentDrag;
+let startX = 0;
+let startY = 0;
+
+document.addEventListener('mousemove', e => {
+    if (currentDrag) {
+        currentDrag.style.top = (e.clientY - startY) + 'px';
+        currentDrag.style.left = (e.clientX - startX) + 'px';
+    }
+});
+
 /*
  Функция должна создавать и возвращать новый div с классом draggable-div и случайными размерами/цветом/позицией
  Функция должна только создавать элемент и задвать ему случайные размер/позицию/цвет
