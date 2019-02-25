@@ -53,7 +53,7 @@ function createDiv() {
     div.style.left = random(0, window.innerWidth) + 'px';
     div.style.width = random(minSize, maxSize) + 'px';
     div.style.height = random(minSize, maxSize) + 'px';
-
+//при событие, текущий перетаскиваемый элемент это divили e.target, startX и startY держать элемент не за край блока а там где был курсор
     div.addEventListener('mousedown', e => {
         currentDrag = div;
         startX = e.offsetX;
